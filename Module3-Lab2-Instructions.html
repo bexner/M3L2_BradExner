@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 3: Lab 2 - MongoDB with File Logging, Rate Limiting, and Swagger</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Times New Roman', Georgia, serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #222;
+      background: #f5f5f5;
+    }
+    .page {
+      max-width: 850px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 60px 70px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      border-radius: 4px;
+    }
+
+    /* Title page */
+    .title-page {
+      text-align: center;
+      padding: 120px 40px 80px;
+    }
+    .title-page h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: #1a1a1a;
+    }
+    .title-page h2 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    .title-page h3 {
+      font-size: 20px;
+      color: #555;
+      margin-bottom: 40px;
+    }
+    .title-page .course-info {
+      font-size: 16px;
+      color: #444;
+      margin-bottom: 10px;
+    }
+    .title-page .points {
+      margin-top: 60px;
+      font-weight: bold;
+      font-size: 17px;
+    }
+    .title-page .submit-info {
+      font-size: 15px;
+      color: #555;
+    }
+
+    /* Headings */
+    h1.section-title {
+      font-size: 22px;
+      text-align: center;
+      margin: 30px 0 18px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #333;
+    }
+    h2.step-title {
+      font-size: 19px;
+      margin: 28px 0 12px;
+      color: #1a1a1a;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* Paragraphs */
+    p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+    p.bold-text {
+      font-weight: bold;
+    }
+
+    /* Ordered lists */
+    ol {
+      margin: 10px 0 14px 30px;
+    }
+    ol li {
+      margin-bottom: 6px;
+    }
+
+    /* Unordered lists */
+    ul {
+      margin: 10px 0 14px 30px;
+    }
+    ul li {
+      margin-bottom: 6px;
+    }
+
+    /* Code blocks */
+    .code-block {
+      background: #f0f0f0;
+      border: 1px solid #ddd;
+      border-left: 4px solid #4a90d9;
+      padding: 14px 18px;
+      margin: 12px 0 16px;
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-x: auto;
+      white-space: pre;
+      border-radius: 3px;
+    }
+
+    /* Inline code */
+    code {
+      background: #f0f0f0;
+      padding: 2px 6px;
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: 14px;
+      border-radius: 3px;
+    }
+
+    /* Screenshot placeholders */
+    .screenshot {
+      background: #fff3f3;
+      border: 2px dashed #c62828;
+      border-radius: 6px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      color: #c62828;
+      font-weight: bold;
+    }
+    .screenshot span.label {
+      color: #b71c1c;
+    }
+
+    /* Bold-then-normal pattern */
+    .desc-item {
+      margin-bottom: 12px;
+    }
+    .desc-item strong {
+      font-weight: bold;
+    }
+
+    /* Deliverables table */
+    .deliverables-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+    }
+    .deliverables-table th {
+      background: #d5e8f0;
+      text-align: left;
+      padding: 10px 14px;
+      border: 1px solid #bbb;
+      font-size: 15px;
+    }
+    .deliverables-table td {
+      padding: 8px 14px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      vertical-align: top;
+    }
+    .deliverables-table tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    /* Important note box */
+    .important-box {
+      background: #fff8e1;
+      border: 1px solid #f9a825;
+      border-left: 5px solid #f9a825;
+      padding: 12px 16px;
+      margin: 14px 0;
+      border-radius: 3px;
+    }
+    .important-box strong {
+      color: #e65100;
+    }
+
+    /* Swagger endpoint highlight box */
+    .endpoint-box {
+      background: #e3f2fd;
+      border: 3px solid #1565c0;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 18px 0;
+      text-align: center;
+    }
+    .endpoint-box .endpoint-label {
+      font-size: 14px;
+      font-weight: bold;
+      color: #1565c0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    .endpoint-box .endpoint-url {
+      font-family: 'Courier New', Consolas, monospace;
+      font-size: 22px;
+      font-weight: bold;
+      color: #0d47a1;
+      background: #bbdefb;
+      padding: 10px 20px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* File structure */
+    .file-tree {
+      background: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: 14px 20px;
+      margin: 12px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.7;
+      border-radius: 3px;
+    }
+
+    /* Page break for print */
+    .page-break {
+      page-break-before: always;
+      margin-top: 40px;
+    }
+
+    /* Header bar */
+    .header-bar {
+      text-align: right;
+      font-style: italic;
+      font-size: 13px;
+      color: #777;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0; padding: 40px 50px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ======================== TITLE PAGE ======================== -->
+<div class="page title-page">
+  <h1>Module 3: Lab 2</h1>
+  <h2>Implementing MongoDB Operations in Node.js</h2>
+  <h3>With File Logging, Rate Limiting, and Swagger API Documentation</h3>
+
+  <p class="course-info">IFT 458 &amp; 554: Middleware Programming &amp; Database Security</p>
+  <p class="course-info">Dinesh Sthapit</p>
+  <p class="course-info">Due: February 15, 2026 at 11:59 PM</p>
+
+  <p class="points">Points: 50</p>
+  <p class="submit-info">Submitting: a file upload (zip and jar)</p>
+</div>
+
+<!-- ======================== INSTRUCTIONS PAGE ======================== -->
+<div class="page">
+  <div class="header-bar">Module 3: Lab 2 &ndash; MongoDB with Logging</div>
+
+  <h1 class="section-title">Instructions</h1>
+
+  <p class="bold-text">Read the entire assignment BEFORE you start.</p>
+  <p>Required to submit a Word or PDF document that follows the Lab Submission Requirements located in the Welcome Module.</p>
+  <p>Under Deliverables is a list of the screenshots that are required.</p>
+  <p>Before you start the assignment, it is expected that you have read, watched and performed all the required installations.</p>
+
+  <h1 class="section-title">Assignment</h1>
+
+  <p><strong>Source Code:</strong> Download and Review the source code: IFT458 - Module3Lab1-3-2.zip (original) and IFT458-Module3Lab2-WithLogging.zip (updated with logging, rate limiting, and Swagger documentation).</p>
+
+  <p>Pay attention to how the code is structured. The two ZIP files contain different versions of the same project. Lab1 is the basic version with just console.log. Lab2 is the updated version that writes logs to a file, has a rate limiter, and has Swagger API documentation. You need to compare them and understand what is different.</p>
+
+  <p class="bold-text">Requirements: Ensure completion of Module 3 Assignments, before completing this lab.</p>
+
+  <!-- ======================== STEP 1: SWAGGER ENDPOINT ======================== -->
+  <h2 class="step-title">Step 1: Install Dependencies and Start the Server</h2>
+
+  <div class="important-box">
+    <strong>IMPORTANT - You MUST run npm install first!</strong> The Lab2 project uses new packages that was not in Lab1, including <code>swagger-jsdoc</code> and <code>swagger-ui-express</code>. If you skip the <code>npm install</code> step, the server will crash with a "Cannot find module" error and the Swagger page will NOT work.
+  </div>
+
+  <p class="bold-text">Open your terminal, navigate to the project folder, and run these commands:</p>
+  <div class="code-block">cd IFT458-Module3Lab2
+npm install
+npm start</div>
+
+  <div class="important-box">
+    <strong>IMPORTANT:</strong> You MUST use <code>npm start</code> (or <code>node server.js</code>) to start the server. Do NOT run <code>node app.js</code> because app.js is a different entry point and runs on a different port. The Swagger documentation and all the features is configured in <code>server.js</code> which runs on port 3000.
+  </div>
+
+  <p>The <code>npm install</code> command will download and install all the packages listed in package.json, including the two new Swagger packages. You only need to do this once.</p>
+
+  <p>After running <code>node server.js</code>, you should see log messages in the console like this:</p>
+  <div class="code-block">[2026-02-13T15:30:00.000Z] [INFO] [host:YourComputer] [user:yourname] App running on port http://localhost:3000
+[2026-02-13T15:30:00.000Z] [INFO] [host:YourComputer] [user:yourname] Swagger API docs available at http://localhost:3000/api-docs</div>
+
+  <p>If you see these messages, the server is running and ready. If you see any error messages, make sure you runned <code>npm install</code> first.</p>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 1:</span> Of the terminal/console showing the server started successfully with the log messages.
+  </div>
+
+  <!-- ======================== STEP 2: SWAGGER UI ACCESS ======================== -->
+  <h2 class="step-title">Step 2: Access the Swagger API Documentation Endpoint</h2>
+
+  <div class="important-box">
+    <strong>What is Swagger?</strong> Swagger (also called OpenAPI) is a standard way to document REST APIs. It automatically generates a interactive web page where you can see all the API endpoints, what parameters they need, and what responses they return. You can also <strong>test the API directly from the Swagger page</strong> without needing Postman or any other tool.
+  </div>
+
+  <p>In this lab, we use Swagger to both document and test the Loan API. The project uses two npm packages: <code>swagger-jsdoc</code> (reads the @swagger comments from route files) and <code>swagger-ui-express</code> (serves the visual web page).</p>
+
+  <p class="bold-text">Open your browser and go to the Swagger documentation endpoint:</p>
+
+  <div class="endpoint-box">
+    <div class="endpoint-label">Swagger Documentation Endpoint</div>
+    <div class="endpoint-url">http://localhost:3000/api-docs</div>
+  </div>
+
+  <p>You should see the Swagger UI page load in your browser. It will have the title "Loan API Documentation" at the top, followed by a description of the API and a list of all the endpoints.</p>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 2:</span> Of the Swagger UI page in the browser at http://localhost:3000/api-docs showing the full API documentation with both GET /api/ and POST /api/loans endpoints visible.
+  </div>
+
+  <!-- ======================== STEP 3: HOW SWAGGER UI WORKS ======================== -->
+  <h2 class="step-title">Step 3: Understanding How the Swagger UI Works</h2>
+
+  <p>The Swagger UI page is a interactive documentation page that lets you explore and test the API. Here is how the different parts of the Swagger page works:</p>
+
+  <p class="bold-text">Part 1: The Header Section</p>
+  <p>At the very top of the page, you will see the API title ("Loan API Documentation"), the version number (1.0.0), and a description that explains what this API does. This information comes from the <code>config/swaggerConfig.js</code> file. Below that is the server URL (<code>http://localhost:3000</code>) which tells Swagger where to send the API requests.</p>
+
+  <p class="bold-text">Part 2: The Endpoints List</p>
+  <p>Below the header, you will see the endpoints grouped under the "Loans" tag. There is two endpoints:</p>
+  <ol>
+    <li><strong>GET /api/</strong> &mdash; This endpoint retrieves all loans from the database.</li>
+    <li><strong>POST /api/loans</strong> &mdash; This endpoint creates a new loan in the database.</li>
+  </ol>
+  <p>Each endpoint shows as a colored bar. GET endpoints is blue and POST endpoints is green. Click on any endpoint bar to expand it and see more details.</p>
+
+  <p class="bold-text">Part 3: Expanding an Endpoint</p>
+  <p>When you click on a endpoint to expand it, you will see:</p>
+  <ol>
+    <li><strong>Description</strong> &mdash; A text that explains what this endpoint does.</li>
+    <li><strong>Parameters</strong> &mdash; For GET endpoints, this shows any query parameters needed (our GET endpoint dont have any).</li>
+    <li><strong>Request Body</strong> &mdash; For POST endpoints, this shows the JSON schema that describes what fields you need to send. It shows which fields is required (marked with a red asterisk *) and gives example values for each field.</li>
+    <li><strong>Responses</strong> &mdash; A list of all possible HTTP status codes that the endpoint can return (like 200 for success, 201 for created, 400 for bad request, 429 for rate limited). Each response has a description and a example of what the JSON response body will look like.</li>
+  </ol>
+
+  <p class="bold-text">Part 4: The "Try it out" Button</p>
+  <p>This is the most important feature of Swagger UI. Inside each expanded endpoint, you will see a <strong>"Try it out"</strong> button on the right side. When you click it:</p>
+  <ol>
+    <li>For POST endpoints, the request body becomes editable &mdash; you can type or change the JSON data.</li>
+    <li>A blue <strong>"Execute"</strong> button appears.</li>
+    <li>When you click "Execute", Swagger sends a real HTTP request to your server (just like Postman would).</li>
+    <li>The response appears below the Execute button, showing the HTTP status code, the response body (the JSON data), and the response headers.</li>
+    <li>You also see the <strong>Curl</strong> command that Swagger used, so you can copy it and run it in the terminal if you want.</li>
+  </ol>
+
+  <p class="bold-text">Part 5: The Schemas Section</p>
+  <p>At the very bottom of the Swagger page, there is a "Schemas" section. Click on it to expand it. This section shows the data models used by the API:</p>
+  <ol>
+    <li><strong>Loan</strong> &mdash; Shows the structure of a loan object with all the fields (name, amount, borrower, interestRate, status) and their data types.</li>
+    <li><strong>ErrorResponse</strong> &mdash; Shows the structure of error messages returned when something goes wrong.</li>
+    <li><strong>RateLimitError</strong> &mdash; Shows the structure of the error message returned when the rate limiter blocks your request.</li>
+  </ol>
+
+  <div class="important-box">
+    <strong>NOTE:</strong> The Swagger UI page at /api-docs is NOT rate limited. The <code>app.use("/api-docs", ...)</code> line comes BEFORE the <code>app.use(rateLimiter)</code> line in server.js. So you can refresh the documentation page as many times as you want. But when you click "Execute" to test API calls, those calls WILL go through the rate limiter (3 requests per minute max).
+  </div>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 3:</span> Of the Swagger UI page showing a expanded endpoint (either GET or POST) with the "Try it out" button visible and the response codes section showing.
+  </div>
+
+  <!-- ======================== STEP 4 ======================== -->
+  <h2 class="step-title">Step 4: Review the Express Backend Code Changes</h2>
+
+  <p>Look at the following files and compare how they are different between Lab1 and Lab2:</p>
+
+  <div class="desc-item">
+    <strong>server.js &mdash;</strong> In Lab2, the server.js now imports the fileLogger from utils/fileLogger.js and the rateLimiter from middleware/rateLimiter.js. It registers the rate limiter as global middleware with <code>app.use(rateLimiter)</code> so every route is protected. It also logs every incoming request to the file with the HTTP method, URL, and IP address. The MongoDB connection now has a .catch() block that logs errors to the file instead of just crashing.
+  </div>
+
+  <div class="desc-item">
+    <strong>loanController.js &mdash;</strong> In Lab2, every function (getAllLoans, createLoan) now uses <code>logger.info()</code> and <code>logger.error()</code> instead of no logging at all. It logs what it is doing before and after database calls, and logs the full error message if something fails.
+  </div>
+
+  <div class="desc-item">
+    <strong>loanRoutes.js &mdash;</strong> In Lab2, each route has a extra middleware function that logs which route was hit before passing to the controller.
+  </div>
+
+  <div class="desc-item">
+    <strong>loanDbContext.js &mdash;</strong> In Lab2, the database context uses the file logger instead of console.log and console.error.
+  </div>
+
+  <p>Here is the updated server.js code from Lab2:</p>
+  <div class="code-block">const express = require("express");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+// Load environment variables from config.env
+dotenv.config({ path: "./config.env" });
+
+// Import the file logger and rate limiter
+const logger = require("./utils/fileLogger");
+const rateLimiter = require("./middleware/rateLimiter");
+
+// Import Swagger packages for API documentation
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swaggerConfig");
+
+const app = express();
+
+// Parse JSON request bodies
+app.use(express.json());
+
+// Swagger API Documentation Route at /api-docs (NOT rate limited)
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Apply rate limiter to ALL routes (3 requests per minute)
+app.use(rateLimiter);
+
+// Log every incoming request to the file
+app.use((req, res, next) =&gt; {
+  logger.info(`${req.method} ${req.url} - from IP: ${req.ip}`);
+  next();
+});
+
+// MongoDB connection setup using Mongoose
+const DB = process.env.DATABASE.replace("HelloMongo", process.env.DB_PASSWORD);
+
+mongoose
+  .connect(DB, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() =&gt; {
+    logger.info("MongoDB connection successful");
+  })
+  .catch((err) =&gt; {
+    logger.error("MongoDB connection FAILED: " + err.message);
+  });
+
+// Routes
+const loanRoutes = require("./routes/loanRoutes.js");
+app.use("/api", loanRoutes);
+
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () =&gt; {
+  logger.info(`App running on port http://localhost:${port}`);
+  logger.info(`Swagger API docs at http://localhost:${port}/api-docs`);
+  logger.info("Rate limit is set to 3 requests per minute per IP");
+  logger.info("Logs are being saved to logs/app.log");
+});</div>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 4:</span> Of the server.js file showing the Swagger imports, rateLimiter import, and <code>app.use(rateLimiter)</code> line.
+  </div>
+  <div class="screenshot">
+    <span class="label">Screenshot 5:</span> Of the server.js file showing the Swagger route <code>app.use("/api-docs", ...)</code> and the logging middleware.
+  </div>
+
+  <!-- ======================== STEP 5 ======================== -->
+  <h2 class="step-title">Step 5: Review the File Logger Utility</h2>
+
+  <p>The Lab2 version has a NEW folder called <code>utils/</code> with a file called <code>fileLogger.js</code> inside it. This file did not exist in Lab1.</p>
+
+  <p>The fileLogger.js module does the following things:</p>
+
+  <ol>
+    <li>It reads the <code>LOG_PATH</code> from config.env to know where to save the log file.</li>
+    <li>It creates the <code>logs/</code> folder automatically if it doesnt exist yet.</li>
+    <li>It provides four functions: <code>info()</code>, <code>warn()</code>, <code>error()</code>, and <code>debug()</code> for different log levels.</li>
+    <li>It uses <code>os.hostname()</code> and <code>os.userInfo().username</code> to get the computer name and the logged in user.</li>
+    <li>Every log message gets a timestamp, a level, the hostname, and the username. For example: <code>[2026-02-13T15:30:00.000Z] [INFO] [host:Johns-MacBook] [user:john] message here</code>.</li>
+    <li>It writes every message to BOTH the console AND the log file at the same time.</li>
+  </ol>
+
+  <p>Here is the full fileLogger.js code:</p>
+  <div class="code-block">const fs = require("fs");
+const path = require("path");
+const os = require("os");
+
+// Get the hostname and username of the machine
+const hostname = os.hostname();
+const username = os.userInfo().username;
+
+// Get the log file path from config.env (LOG_PATH) or use default
+const configLogPath = process.env.LOG_PATH || "./logs/app.log";
+const logFilePath = path.resolve(configLogPath);
+
+// Create the logs folder if it doesnt exist yet
+const logsDir = path.dirname(logFilePath);
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
+
+// Format a log message with timestamp, level, hostname, and username
+function formatMessage(level, message) {
+  const timestamp = new Date().toISOString();
+  return `[${timestamp}] [${level}] [host:${hostname}] [user:${username}] ${message}`;
+}
+
+// Write a message to both the console and the log file
+function writeLog(level, message) {
+  const formatted = formatMessage(level, message);
+  if (level === "ERROR") { console.error(formatted); }
+  else if (level === "WARN") { console.warn(formatted); }
+  else { console.log(formatted); }
+  fs.appendFileSync(logFilePath, formatted + "\n");
+}
+
+function info(message) { writeLog("INFO", message); }
+function warn(message) { writeLog("WARN", message); }
+function error(message) { writeLog("ERROR", message); }
+function debug(message) {
+  if (process.env.NODE_ENV !== "production") {
+    writeLog("DEBUG", message);
+  }
+}
+
+module.exports = { info, warn, error, debug };</div>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 6:</span> Of the utils/fileLogger.js file showing the full code with os.hostname() and os.userInfo().username.
+  </div>
+
+  <!-- ======================== STEP 6 ======================== -->
+  <h2 class="step-title">Step 6: Review app.js Changes</h2>
+
+  <p>Review the app.js file in both versions. In Lab2, the app.js now uses the file logger instead of console.log for the startup message.</p>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 7:</span> Of the app.js file from Lab2 showing the logger import and usage.
+  </div>
+
+  <!-- ======================== STEP 7 ======================== -->
+  <h2 class="step-title">Step 7: Add Data Using Swagger UI and Verify in MongoDB</h2>
+
+  <p>Make sure your server is still running from Step 1. If not, run <code>node server.js</code> again.</p>
+
+  <p class="bold-text">Use Swagger UI to add loan data:</p>
+  <ol>
+    <li>Open your web browser and go to <code>http://localhost:3000/api-docs</code></li>
+    <li>Click on <strong>POST /api/loans</strong> to expand it.</li>
+    <li>Click the <strong>"Try it out"</strong> button.</li>
+    <li>In the request body text box, enter this JSON:</li>
+  </ol>
+
+  <div class="code-block">{
+  "name": "John Doe",
+  "amount": 5000,
+  "borrower": "John Doe",
+  "interestRate": 5.5
+}</div>
+
+  <ol start="6">
+    <li>Click <strong>"Execute"</strong> to send the POST request.</li>
+    <li>You should see a <strong>201</strong> response code with the created loan data in the response body below.</li>
+  </ol>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 8:</span> Of the Swagger UI POST /api/loans with the "Try it out" showing the successful addition of loan data (status 201 response).
+  </div>
+
+  <p>Open MongoDB terminal (or MongoDB Compass) and verify that the data has been successfully inserted.</p>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 9:</span> Of the MongoDB terminal showing the newly inserted loan data.
+  </div>
+
+  <!-- ======================== STEP 8 ======================== -->
+  <h2 class="step-title">Step 8: Test the Rate Limiter &ndash; Trigger the 429 Error</h2>
+
+  <div class="important-box">
+    <strong>IMPORTANT:</strong> This is where you will test the rate limiting feature using Swagger UI. The rate limiter is set to allow only 3 requests per minute. You need to send MORE than 3 requests quickly to trigger the block.
+  </div>
+
+  <p class="bold-text">Follow these steps carefully to trigger the rate limit error:</p>
+
+  <ol>
+    <li>Make sure your server is running (<code>node server.js</code>).</li>
+    <li>Open your browser and go to <code>http://localhost:3000/api-docs</code></li>
+    <li>Click on <strong>GET /api/</strong> to expand it, then click <strong>"Try it out"</strong>.</li>
+    <li>Click <strong>"Execute"</strong> &mdash; this is request #1. You should see a <strong>200</strong> response with the list of loans.</li>
+    <li>Click <strong>"Execute"</strong> again quickly &mdash; this is request #2. You should still get <strong>200</strong>.</li>
+    <li>Click <strong>"Execute"</strong> again quickly &mdash; this is request #3. You should still get <strong>200</strong>. This is the LAST allowed request.</li>
+    <li>Click <strong>"Execute"</strong> ONE MORE TIME &mdash; this is request #4. <strong>NOW you should get a 429 Too Many Requests error!</strong></li>
+  </ol>
+
+  <p class="bold-text">The 429 error response will look like this in the Swagger response section:</p>
+  <div class="code-block">{
+  "status": "fail",
+  "message": "Too many requests. You are limited to 3 requests
+   per minute. Please wait XX seconds and try again."
+}</div>
+
+  <p>You can also test it by switching to <strong>POST /api/loans</strong> endpoint on the Swagger page &mdash; the rate limiter applies to ALL endpoints, not just one. Any combination of GET and POST requests that totals more than 3 in one minute will trigger the block.</p>
+
+  <div class="important-box">
+    <strong>IMPORTANT:</strong> If you want to test again, you must wait 60 seconds for the counter to reset, OR restart the server.
+  </div>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 10:</span> Of the Swagger UI showing the SUCCESSFUL 200 response from GET /api/ (one of the first 3 requests).
+  </div>
+  <div class="screenshot">
+    <span class="label">Screenshot 11:</span> Of the Swagger UI showing the <strong>429 Too Many Requests</strong> ERROR response (the 4th request that got blocked).
+  </div>
+  <div class="screenshot">
+    <span class="label">Screenshot 12:</span> Of the terminal/console showing the rate limit WARN log message when the block happened.
+  </div>
+
+  <!-- ======================== STEP 9 ======================== -->
+  <h2 class="step-title">Step 9: Open and Review the Log File</h2>
+
+  <p class="bold-text">After you are done testing (Steps 7 and 8), open the log file to see everything that was recorded.</p>
+
+  <p>The log file is located at: <code>logs/app.log</code> (inside your project folder). You can also check the LOG_PATH in config.env to confirm the path.</p>
+
+  <p class="bold-text">To open the log file:</p>
+  <ol>
+    <li>In VS Code, open the <code>logs/</code> folder in your project and click on <code>app.log</code>.</li>
+    <li>OR in the terminal, type: <code>cat logs/app.log</code> (Mac/Linux) or <code>type logs\app.log</code> (Windows).</li>
+  </ol>
+
+  <p>The log file should show ALL the activity from your testing session, including:</p>
+  <ol>
+    <li>The server starting up with the port number.</li>
+    <li>The MongoDB connection message.</li>
+    <li>Every GET and POST request you made from Swagger UI in Steps 7 and 8.</li>
+    <li>The rate limiter WARN messages when requests got blocked in Step 8.</li>
+    <li>Any errors if they happened.</li>
+  </ol>
+
+  <p>Each line has a timestamp, a log level, the hostname, the username, and the message. For example:</p>
+  <div class="code-block">[2026-02-13T15:30:00.000Z] [INFO] [host:Johns-MacBook] [user:john] App running on port http://localhost:3000
+[2026-02-13T15:30:00.000Z] [INFO] [host:Johns-MacBook] [user:john] Swagger API docs available at http://localhost:3000/api-docs
+[2026-02-13T15:30:01.000Z] [INFO] [host:Johns-MacBook] [user:john] MongoDB connection successful
+[2026-02-13T15:30:01.000Z] [INFO] [host:Johns-MacBook] [user:john] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T15:30:01.000Z] [INFO] [host:Johns-MacBook] [user:john] Logs are being saved to logs/app.log
+[2026-02-13T15:31:05.000Z] [INFO] [host:Johns-MacBook] [user:john] GET /api/ - from IP: ::1
+[2026-02-13T15:31:05.000Z] [INFO] [host:Johns-MacBook] [user:john] getAllLoans: Fetching all loans from database...
+[2026-02-13T15:31:06.000Z] [INFO] [host:Johns-MacBook] [user:john] GET /api/ - from IP: ::1
+[2026-02-13T15:31:07.000Z] [INFO] [host:Johns-MacBook] [user:john] GET /api/ - from IP: ::1
+[2026-02-13T15:31:08.000Z] [WARN] [host:Johns-MacBook] [user:john] Rate limit BLOCKED: IP ::1 made 4 requests. Limit is 3 per minute. Must wait 57s.</div>
+
+  <div class="important-box">
+    <strong>NOTE:</strong> The hostname and username in your log file will be different from the example above. It will show YOUR computer name and YOUR username. This is how the logger identifies which machine and user generated each log entry.
+  </div>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 13:</span> Of the logs/app.log file opened in VS Code or terminal showing ALL the log entries from your testing.
+  </div>
+
+  <!-- ======================== STEP 10 ======================== -->
+  <h2 class="step-title">Step 10: Review the Swagger Configuration Code</h2>
+
+  <p>Now that you have used the Swagger UI to test the API in Steps 7 and 8, lets review the code that makes it work. There is 3 files involved:</p>
+
+  <p class="bold-text">New files added for Swagger:</p>
+  <ol>
+    <li><code>config/swaggerConfig.js</code> &mdash; This is the Swagger configuration file. It defines the API title, version, description, server URL, and the data schemas (like the Loan model and error responses).</li>
+    <li><code>routes/loanRoutes.js</code> &mdash; Updated with <code>@swagger</code> JSDoc comments above each route that describe the endpoint, parameters, request body, and all possible responses.</li>
+    <li><code>server.js</code> &mdash; Updated to import swagger-ui-express and swaggerConfig, and serve the Swagger UI at <code>/api-docs</code>.</li>
+    <li><code>package.json</code> &mdash; Updated with two new dependencies: <code>swagger-jsdoc</code> and <code>swagger-ui-express</code>.</li>
+  </ol>
+
+  <p>Here is the Swagger configuration file (<code>config/swaggerConfig.js</code>):</p>
+  <div class="code-block">const swaggerJsdoc = require("swagger-jsdoc");
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Loan API Documentation",
+      version: "1.0.0",
+      description: "API documentation for the Loan Management System. " +
+        "This API allows you to create and retrieve loan records from MongoDB. " +
+        "It also has rate limiting (3 requests per minute) and file logging.",
+    },
+    servers: [
+      { url: "http://localhost:3000", description: "Local development server" },
+    ],
+    components: {
+      schemas: {
+        Loan: {
+          type: "object",
+          required: ["name", "amount", "borrower", "interestRate"],
+          properties: {
+            _id: { type: "string", example: "65f1a2b3c4d5e6f7a8b9c0d1" },
+            name: { type: "string", example: "John Doe" },
+            amount: { type: "number", example: 5000 },
+            borrower: { type: "string", example: "John Doe" },
+            interestRate: { type: "number", example: 5.5 },
+            status: { type: "string", default: "pending" },
+          },
+        },
+        ErrorResponse: { ... },
+        RateLimitError: { ... },
+      },
+    },
+  },
+  apis: ["./routes/*.js"],  // Tell swagger-jsdoc where to find annotations
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+module.exports = swaggerSpec;</div>
+
+  <div class="screenshot">
+    <span class="label">Screenshot 14:</span> Of the config/swaggerConfig.js file showing the Swagger configuration code.
+  </div>
+  <div class="screenshot">
+    <span class="label">Screenshot 15:</span> Of the routes/loanRoutes.js file showing the @swagger JSDoc annotations above the route definitions.
+  </div>
+
+  <!-- ======================== PROJECT STRUCTURE ======================== -->
+  <h2 class="step-title">Project File Structure (Lab2)</h2>
+
+  <p>Here is the complete file structure of the Lab2 project so you can understand how the files is organized:</p>
+
+  <div class="file-tree">
+IFT458 - Module3Lab2/
+  |-- server.js              (main entry point - starts Express + MongoDB + Swagger)
+  |-- app.js                 (application configuration)
+  |-- config.env             (environment variables - LOG_PATH, RATE_LIMIT_MAX)
+  |-- package.json           (project dependencies + swagger packages)
+  |-- package-lock.json
+  |
+  |-- config/                  &lt;-- NEW in Lab2
+  |   |-- swaggerConfig.js   (Swagger/OpenAPI configuration and schemas)
+  |
+  |-- Database/
+  |   |-- loanDbContext.js    (database connection helper)
+  |
+  |-- model/
+  |   |-- loadModel.js       (Mongoose schema for Loan)
+  |
+  |-- controllers/
+  |   |-- loanController.js  (getAllLoans, createLoan functions)
+  |
+  |-- routes/
+  |   |-- loanRoutes.js      (API route definitions + @swagger annotations)
+  |
+  |-- utils/                  &lt;-- NEW in Lab2
+  |   |-- fileLogger.js      (writes logs to console + file)
+  |
+  |-- middleware/              &lt;-- NEW in Lab2
+  |   |-- rateLimiter.js     (limits 3 requests per minute per IP)
+  |
+  |-- logs/                    &lt;-- Created automatically
+      |-- app.log             (all log entries saved here)
+  </div>
+
+</div>
+
+<!-- ======================== DELIVERABLES PAGE ======================== -->
+<div class="page page-break">
+  <div class="header-bar">Module 3: Lab 2 &ndash; Deliverables</div>
+
+  <h1 class="section-title">Deliverables Summary</h1>
+
+  <p>Submit a Word or PDF document with ALL 15 screenshots listed below. Each screenshot should be labeled with its number.</p>
+
+  <table class="deliverables-table">
+    <thead>
+      <tr>
+        <th>Step</th>
+        <th>Screenshot #</th>
+        <th>What to Capture</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Step 1: Install &amp; Start Server</td>
+        <td>Screenshot 1</td>
+        <td>Terminal showing server started successfully with log messages</td>
+      </tr>
+      <tr>
+        <td>Step 2: Swagger Endpoint</td>
+        <td>Screenshot 2</td>
+        <td>Swagger UI page at http://localhost:3000/api-docs showing both endpoints</td>
+      </tr>
+      <tr>
+        <td>Step 3: How Swagger UI Works</td>
+        <td>Screenshot 3</td>
+        <td>Swagger UI showing a expanded endpoint with "Try it out" button and response codes</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Step 4: Express Backend Code</td>
+        <td>Screenshot 4</td>
+        <td>server.js showing Swagger imports and rateLimiter import</td>
+      </tr>
+      <tr>
+        <td>Screenshot 5</td>
+        <td>server.js showing Swagger route and logging middleware</td>
+      </tr>
+      <tr>
+        <td>Step 5: File Logger</td>
+        <td>Screenshot 6</td>
+        <td>utils/fileLogger.js showing code with hostname and username</td>
+      </tr>
+      <tr>
+        <td>Step 6: app.js</td>
+        <td>Screenshot 7</td>
+        <td>app.js showing logger usage</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Step 7: Add Data via Swagger &amp; Verify</td>
+        <td>Screenshot 8</td>
+        <td>Swagger UI POST /api/loans with successful 201 response</td>
+      </tr>
+      <tr>
+        <td>Screenshot 9</td>
+        <td>MongoDB terminal showing inserted data</td>
+      </tr>
+      <tr>
+        <td rowspan="3">Step 8: Test Rate Limiter via Swagger</td>
+        <td>Screenshot 10</td>
+        <td>Swagger UI showing successful 200 response from GET /api/</td>
+      </tr>
+      <tr>
+        <td>Screenshot 11</td>
+        <td>Swagger UI showing 429 Too Many Requests error (4th request)</td>
+      </tr>
+      <tr>
+        <td>Screenshot 12</td>
+        <td>Terminal showing WARN log when rate limit blocked a request</td>
+      </tr>
+      <tr>
+        <td>Step 9: Review Log File</td>
+        <td>Screenshot 13</td>
+        <td>logs/app.log file showing all log entries with hostname and username</td>
+      </tr>
+      <tr>
+        <td rowspan="2">Step 10: Swagger Code Review</td>
+        <td>Screenshot 14</td>
+        <td>config/swaggerConfig.js file showing the configuration code</td>
+      </tr>
+      <tr>
+        <td>Screenshot 15</td>
+        <td>routes/loanRoutes.js showing @swagger JSDoc annotations</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="important-box">
+    <strong>Reminder:</strong> Make sure all 15 screenshots is clearly visible and labeled in your submission document. Screenshots that is too small to read or is missing will result in lost points.
+  </div>
+
+</div>
+
+</body>
+</html>

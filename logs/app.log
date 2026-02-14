@@ -1,0 +1,118 @@
+[2026-02-13T03:19:06.419Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:19:06.420Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:19:06.421Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:19:06.458Z] [ERROR] MongoDB connection FAILED: querySrv ENOTFOUND _mongodb._tcp.students.k3qmc.mongodb.net
+[2026-02-13T03:19:20.651Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T03:19:20.654Z] [INFO] GET / - from IP: ::1
+[2026-02-13T03:19:20.736Z] [DEBUG] Rate limiter: IP ::1 request 2/3
+[2026-02-13T03:19:20.738Z] [INFO] GET / - from IP: ::1
+[2026-02-13T03:19:26.417Z] [DEBUG] Rate limiter: IP ::1 request 3/3
+[2026-02-13T03:19:26.419Z] [INFO] GET /login - from IP: ::1
+[2026-02-13T03:19:33.334Z] [WARN] Rate limit BLOCKED: IP ::1 made 4 requests. Limit is 3 per minute. Must wait 48s.
+[2026-02-13T03:19:33.378Z] [WARN] Rate limit BLOCKED: IP ::1 made 5 requests. Limit is 3 per minute. Must wait 48s.
+[2026-02-13T03:39:16.074Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:39:16.079Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:39:16.079Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:39:16.939Z] [ERROR] MongoDB connection FAILED: bad auth : Authentication failed.
+[2026-02-13T03:41:01.402Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:41:01.403Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:41:01.403Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:41:02.230Z] [ERROR] MongoDB connection FAILED: bad auth : Authentication failed.
+[2026-02-13T03:43:57.351Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:43:57.353Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:43:57.354Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:43:58.186Z] [ERROR] MongoDB connection FAILED: bad auth : Authentication failed.
+[2026-02-13T03:48:23.514Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:48:23.515Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:48:23.515Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:48:24.332Z] [ERROR] MongoDB connection FAILED: bad auth : Authentication failed.
+[2026-02-13T03:49:47.676Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:49:47.678Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:49:47.679Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:49:48.635Z] [ERROR] MongoDB connection FAILED: bad auth : Authentication failed.
+[2026-02-13T03:52:10.162Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:52:10.165Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:52:10.165Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:53:03.296Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:53:03.297Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:53:03.297Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:53:35.468Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:53:35.471Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:53:35.471Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T03:53:41.348Z] [INFO] MongoDB connection successful
+[2026-02-13T03:53:49.835Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T03:53:49.836Z] [INFO] GET / - from IP: ::1
+[2026-02-13T03:53:54.942Z] [DEBUG] Rate limiter: IP ::1 request 2/3
+[2026-02-13T03:53:54.943Z] [INFO] GET /docs - from IP: ::1
+[2026-02-13T03:54:10.976Z] [DEBUG] Rate limiter: IP ::1 request 3/3
+[2026-02-13T03:54:10.978Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T03:54:38.777Z] [WARN] Rate limit BLOCKED: IP ::1 made 4 requests. Limit is 3 per minute. Must wait 12s.
+[2026-02-13T03:54:38.822Z] [WARN] Rate limit BLOCKED: IP ::1 made 5 requests. Limit is 3 per minute. Must wait 12s.
+[2026-02-13T03:55:29.789Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T03:55:29.792Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T03:55:29.792Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T04:02:52.227Z] [INFO] MongoDB connection successful
+[2026-02-13T04:02:52.274Z] [DEBUG] Rate limiter: first request from IP unknown
+[2026-02-13T04:02:52.275Z] [INFO] GET / - from IP: undefined
+[2026-02-13T04:02:52.278Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T04:02:52.278Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:02:59.468Z] [DEBUG] Rate limiter: IP ::1 request 2/6
+[2026-02-13T04:02:59.473Z] [INFO] GET / - from IP: ::1
+[2026-02-13T04:03:04.278Z] [DEBUG] Rate limiter: IP ::1 request 3/6
+[2026-02-13T04:03:04.279Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:03:10.037Z] [DEBUG] Rate limiter: IP ::1 request 4/6
+[2026-02-13T04:03:10.038Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:04:58.342Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T04:04:58.343Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T04:04:58.343Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T04:04:59.329Z] [INFO] MongoDB connection successful
+[2026-02-13T04:05:05.721Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T04:05:05.722Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T04:05:05.722Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T04:05:06.573Z] [INFO] MongoDB connection successful
+[2026-02-13T04:05:16.867Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T04:05:16.868Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:05:20.423Z] [DEBUG] Rate limiter: IP ::1 request 2/6
+[2026-02-13T04:05:20.424Z] [INFO] GET / - from IP: ::1
+[2026-02-13T04:05:30.573Z] [DEBUG] Rate limiter: IP ::1 request 3/6
+[2026-02-13T04:05:30.575Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:11:38.953Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T04:11:38.955Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T04:11:38.955Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T04:11:39.977Z] [INFO] MongoDB connection successful
+[2026-02-13T04:11:42.697Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T04:11:42.698Z] [INFO] GET / - from IP: ::1
+[2026-02-13T04:12:02.598Z] [DEBUG] Rate limiter: IP ::1 request 2/6
+[2026-02-13T04:12:02.599Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:12:19.909Z] [DEBUG] Rate limiter: IP ::1 request 3/6
+[2026-02-13T04:12:19.912Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:14:36.952Z] [DEBUG] Rate limiter: window reset for IP ::1
+[2026-02-13T04:14:36.960Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:14:37.557Z] [DEBUG] Rate limiter: IP ::1 request 2/6
+[2026-02-13T04:14:37.558Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:14:38.318Z] [DEBUG] Rate limiter: IP ::1 request 3/6
+[2026-02-13T04:14:38.319Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:14:38.568Z] [DEBUG] Rate limiter: IP ::1 request 4/6
+[2026-02-13T04:14:38.568Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:14:38.828Z] [DEBUG] Rate limiter: IP ::1 request 5/6
+[2026-02-13T04:14:38.830Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:18:02.316Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T04:18:02.320Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T04:18:02.320Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T04:18:03.248Z] [INFO] MongoDB connection successful
+[2026-02-13T04:18:12.185Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T04:18:12.186Z] [INFO] GET / - from IP: ::1
+[2026-02-13T04:18:21.576Z] [DEBUG] Rate limiter: IP ::1 request 2/6
+[2026-02-13T04:18:21.576Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:18:54.289Z] [DEBUG] Rate limiter: IP ::1 request 3/6
+[2026-02-13T04:18:54.290Z] [INFO] GET /api-docs - from IP: ::1
+[2026-02-13T04:24:07.566Z] [INFO] App running on port http://localhost:3000
+[2026-02-13T04:24:07.568Z] [INFO] Swagger API docs available at http://localhost:3000/api-docs
+[2026-02-13T04:24:07.568Z] [INFO] Rate limit is set to 3 requests per minute per IP
+[2026-02-13T04:24:07.568Z] [INFO] Logs are being saved to logs/app.log
+[2026-02-13T04:24:08.478Z] [INFO] MongoDB connection successful
+[2026-02-13T04:24:35.491Z] [DEBUG] Rate limiter: first request from IP ::1
+[2026-02-13T04:24:35.492Z] [INFO] GET /api/ - from IP: ::1
+[2026-02-13T04:24:35.493Z] [INFO] Route hit: GET /api/ - Requesting all loans
+[2026-02-13T04:24:35.494Z] [INFO] getAllLoans: Fetching all loans from database...
+[2026-02-13T04:24:35.585Z] [INFO] getAllLoans: Found 0 loans successfully
